@@ -88,12 +88,6 @@ These insights help the company improve strategy and performance.
 - **Session Management:** Flask Sessions
 
 ---
-
-##  How to Run Locally
-
-```bash
-python app.py
-
 ## 📸 Screenshots
 Below are key screens from the HomeScout system, showing the full workflow across different user roles.
 ### 🏠 Homepage
@@ -126,3 +120,9 @@ Below are key screens from the HomeScout system, showing the full workflow acros
 ![Charts](screenshots/Charts.png)
 ### 🏆 Performance & Leaderboard
 ![Leaderboard](screenshots/leaderboard.png)
+
+##  How to Run Locally
+
+```bash
+python app.py
+
