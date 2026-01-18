@@ -93,3 +93,36 @@ These insights help the company improve strategy and performance.
 
 ```bash
 python app.py
+
+## 📸 Screenshots
+Below are key screens from the HomeScout system, showing the full workflow across different user roles.
+### 🏠 Homepage
+![Homepage](screenshots/Homepage.png)
+### 🔍 Property Browsing & Search
+![Browse](screenshots/Browse.png)
+### 🔐 Authentication
+**Login**
+![Login](screenshots/login.png)
+**Register**
+![Register](screenshots/Register.png)
+### 🧑‍💼 Seller Flow
+**Seller submits property request with minimal information**
+![Seller Request](screenshots/seller_request.png)
+### 🧑‍💼 Buyer Flow
+**Buyer searches and sends property request**
+![Buyer Request](screenshots/buyer_request.png)
+### 🧑‍💼 Agent Dashboard
+**Agent manages listings, negotiations, and visits**
+![Agent Dashboard](screenshots/agent_dashboard.png)
+### 👑 Admin Dashboard
+**System overview, controls, and approvals**
+![Admin Dashboard](screenshots/admin_dashboard.png)
+### 🔑 Admin Access & Control
+![Admin Access](screenshots/admin_access1.png)
+![Admin Access](screenshots/admin_access2.png)
+### 📊 Analytics & Reports
+**Business insights and performance tracking**
+![Analytics](screenshots/analytic_reports.png)
+![Charts](screenshots/Charts.png)
+### 🏆 Performance & Leaderboard
+![Leaderboard](screenshots/leaderboard.png)
