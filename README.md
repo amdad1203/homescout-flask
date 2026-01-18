@@ -5,7 +5,10 @@ HomeScout is a role-based real estate management web application built with **Fl
 This is not just a listing website.  
 It models the **human workflow behind real estate deals**.
 
----
+## 🎥 Demo Video
+▶️ Watch the full system walkthrough here:  
+https://youtu.be/Ugm0NWFHTKI
+
 
 ## User Roles
 
