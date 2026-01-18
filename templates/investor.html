@@ -1,0 +1,181 @@
+{% extends "layout.html" %}
+{% block content %}
+<h3>Investor Dashboard</h3>
+<p>Welcome back, {{ session.get('username') }}! Explore investment opportunities in Bangladesh.</p>
+
+<div class="row-cards mb-30">
+  <div class="card card-compact text-center">
+    <div class="stat-number">
+      ৳ {{ investor_info.total_invested|format_price if investor_info and investor_info.total_invested else '0' }}
+    </div>
+    <div class="stat-label">Total Invested</div>
+  </div>
+  <div class="card card-compact text-center">
+    <div class="stat-number">{{ investments|length }}</div>
+    <div class="stat-label">Properties</div>
+  </div>
+  <div class="card card-compact text-center">
+    <div class="stat-number">
+      {{ investor_info.expected_return_rate if investor_info else '8' }}%
+    </div>
+    <div class="stat-label">Expected ROI</div>
+  </div>
+</div>
+
+<!-- INVESTMENT FORM -->
+<div class="card mb-30">
+  <h4>💸 New Investment</h4>
+  <form method="post" action="{{ url_for('invest_post') }}" class="mt-20">  <!-- FIXED ACTION -->
+    <div class="form-grid">
+      <div>
+        <label>Choose Property</label>
+        <select name="property_id" required>
+          <option value="">Select a property</option>
+          {% for p in properties %}
+          <option value="{{ p.property_id }}">
+            {{ p.title }} - ৳ {{ p.base_price|format_price if p.base_price else 'N/A' }} - {{ p.city or 'Unknown' }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+      <div>
+        <label>Investment Amount (৳)</label>
+        <input name="amount" type="number" min="100000" step="100000" required 
+               placeholder="Enter amount">
+      </div>
+    </div>
+    <div class="mt-20">
+      <label>Investment Notes (Optional)</label>
+      <textarea name="notes" placeholder="Add any notes about this investment..."></textarea>
+    </div>
+    <button type="submit" class="btn btn-success mt-20" style="width: 100%;">
+      💰 Make Investment
+    </button>
+  </form>
+</div>
+
+<!-- YOUR INVESTMENTS -->
+{% if investments %}
+<div class="card mb-30">
+  <h4>📈 Your Investments</h4>
+  <div class="table-responsive mt-20">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Property</th>
+          <th>Location</th>
+          <th>Invested</th>
+          <th>Expected ROI</th>
+          <th>Date</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for inv in investments %}
+        <tr>
+          <td>
+            <strong>{{ inv.title }}</strong>
+            <div class="small">{{ inv.property_id }}</div>
+          </td>
+          <td>{{ inv.city or 'Unknown' }}</td>
+          <td>৳ {{ inv.invested_amount|format_price if inv.invested_amount else '0' }}</td>
+          <td>{{ inv.expected_return_rate }}%</td>
+          <td>{{ inv.created_at.strftime('%Y-%m-%d') if inv.created_at else 'N/A' }}</td>
+          <td>
+            <span class="status-badge {{ inv.status|lower if inv.status else 'active' }}">
+              {{ inv.status or 'Active' }}
+            </span>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endif %}
+
+<!-- AVAILABLE PROPERTIES -->
+<div class="card">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+    <h4>🏢 Available Investment Properties</h4>
+    <span class="muted">{{ properties|length }} properties</span>
+  </div>
+  
+  {% if properties %}
+    <div class="grid-cards">
+      {% for p in properties %}
+        <div class="card prop-card-grid">
+          <div class="img-wrap">
+            {% set img_index = (loop.index % 20) + 1 %}
+            <img src="{{ url_for('static', filename='images/sample' ~ img_index ~ '.jpg') }}" 
+                 alt="{{ p.title }}"
+                 onerror="this.src='https://via.placeholder.com/400x300?text={{ p.city|default("Property") }}'">
+            <div class="property-badge investment">Investment</div>
+          </div>
+          <div class="card-body">
+            <div class="title">{{ p.title or 'Property ' ~ p.property_id }}</div>
+            <div class="meta">
+              <span>📍 {{ p.city or 'Location not specified' }}</span>
+            </div>
+            <div class="meta">
+              {% if p.total_rooms %}
+                <span>🏠 {{ p.total_rooms }} Room{% if p.total_rooms > 1 %}s{% endif %}</span>
+              {% endif %}
+              {% if p.area_sqft %}
+                <span>📏 {{ p.area_sqft }} sqft</span>
+              {% endif %}
+            </div>
+            <div class="price">৳ {{ p.base_price|format_price if p.base_price else 'Price on request' }}</div>
+            
+            <div class="investment-actions mt-20">
+              <a href="{{ url_for('property_detail', property_id=p.property_id) }}" 
+                 class="btn btn-small" style="width: 100%; margin-bottom: 8px;">
+                View Details
+              </a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="text-center muted" style="padding: 40px;">
+      <p>No investment properties available at the moment.</p>
+    </div>
+  {% endif %}
+</div>
+
+<style>
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+.property-badge.investment {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+  color: white;
+  z-index: 2;
+}
+.status-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.status-badge.active {
+  background: #d1fae5;
+  color: #065f46;
+}
+.status-badge.sold {
+  background: #f3e8ff;
+  color: #5b21b6;
+}
+</style>
+{% endblock %}

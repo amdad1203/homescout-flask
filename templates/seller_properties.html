@@ -1,0 +1,5 @@
+{% extends "layout.html" %}
+{% block content %}
+  <h3>Your Properties</h3>
+  <ul>{% for p in properties %}<li>{{ p.title }} - {{ p.status }} - {{ p.base_price }}</li>{% else %}<li>No properties</li>{% endfor %}</ul>
+{% endblock %}

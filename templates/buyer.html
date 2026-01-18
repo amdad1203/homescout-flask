@@ -1,0 +1,9 @@
+{% extends "layout.html" %}
+{% block content %}
+  <h3>Buyer Dashboard</h3>
+  <p><a href="{{ url_for('search_results') }}">Search properties</a></p>
+  <div class="card">
+    <h4>Recommended</h4>
+    <ul>{% for p in properties %}<li><a href="{{ url_for('property_detail', property_id=p.property_id) }}">{{ p.title }}</a> - {{ p.base_price }}</li>{% else %}<li>No properties</li>{% endfor %}</ul>
+  </div>
+{% endblock %}

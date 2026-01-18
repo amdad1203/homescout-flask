@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+{% block content %}
+  <h3>Register</h3>
+  {% if session.get('_error') %}<div style="color:red">{{ session.pop('_error') }}</div>{% endif %}
+  <form method="post">
+    <label>Username</label><input name="username" required/>
+    <label>Email</label><input name="email" />
+    <label>Phone</label><input name="phone" />
+    <label>Password</label><input name="password" required/>
+    <label>Role</label>
+    <select name="role"><option value="buyer">Buyer</option><option value="seller">Seller</option><option value="employee">Agent</option><option value="investor">Investor</option></select>
+    <button type="submit">Register</button>
+  </form>
+{% endblock %}

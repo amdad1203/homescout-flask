@@ -1,0 +1,89 @@
+{% extends "layout.html" %}
+{% block content %}
+  <!-- HERO SECTION -->
+  <div class="hero">
+    <h1>Find Your Perfect Home</h1>
+    <p>Discover premium properties with smart search, expert agents, and transparent pricing</p>
+    <a href="{{ url_for('search_results') }}" class="btn">Explore Properties</a>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="card stat-card">
+      <div class="stat-number">2,500+</div>
+      <div class="stat-label">Properties Listed</div>
+    </div>
+    <div class="card stat-card">
+      <div class="stat-number">98%</div>
+      <div class="stat-label">Client Satisfaction</div>
+    </div>
+    <div class="card stat-card">
+      <div class="stat-number">150+</div>
+      <div class="stat-label">Expert Agents</div>
+    </div>
+    <div class="card stat-card">
+      <div class="stat-number">24/7</div>
+      <div class="stat-label">Support Available</div>
+    </div>
+  </div>
+
+  <!-- FEATURED PROPERTIES -->
+  <div class="featured-properties">
+    <h2 class="mb-30">Featured Properties</h2>
+    <div class="featured-grid">
+      {% for p in featured_properties %}
+      <div class="card featured-card">
+        <div class="featured-badge">Featured</div>
+        <div class="img-wrap">
+          <!-- FIXED: Now uses sampleX.jpg instead of propertyX.jpg -->
+          {% set img_num = (p.id % 20) %}
+          {% if img_num == 0 %}{% set img_num = 20 %}{% endif %}
+          <img src="{{ url_for('static', filename='images/sample' ~ img_num ~ '.jpg') }}" 
+               alt="{{ p.title }}"
+               onerror="this.onerror=null; this.src='https://via.placeholder.com/400x300/1e293b/ffffff?text={{ p.city|default('Property') }}+{{ loop.index }}'">
+        </div>
+        <div class="card-body">
+          <div class="title">{{ p.title }}</div>
+          <div class="meta">{{ p.location }}, {{ p.city }}</div>
+          <div class="meta">
+            <span>🏠 {{ p.bedrooms }} Bed</span>
+            <span>🛁 {{ p.bathrooms }} Bath</span>
+            <span>📏 {{ p.area }} sqft</span>
+          </div>
+          <div class="price">${{ p.price|format_price }}</div>
+          <a href="{{ url_for('property_detail', property_id=p.id) }}" class="btn btn-small mt-20">View Details</a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- CTA SECTION -->
+  <div class="card text-center mb-30">
+    <h2>Ready to Find Your Dream Home?</h2>
+    <p>Join thousands of satisfied customers who found their perfect home through our platform.</p>
+    <div style="display: flex; gap: 15px; justify-content: center; margin-top: 20px;">
+      <a href="{{ url_for('register') }}" class="btn">Get Started</a>
+      <a href="{{ url_for('search_results') }}" class="btn btn-success">Browse All Properties</a>
+    </div>
+  </div>
+
+  <!-- QUICK LINKS -->
+  <div class="row-cards">
+    <div class="card card-compact">
+      <h4>🏠 For Buyers</h4>
+      <p>Find your dream home with our advanced search tools and expert guidance.</p>
+      <a href="{{ url_for('login') }}">Start Searching →</a>
+    </div>
+    <div class="card card-compact">
+      <h4>💰 For Sellers</h4>
+      <p>List your property with us and get the best market value with minimal effort.</p>
+      <a href="{{ url_for('register') }}">List Property →</a>
+    </div>
+    <div class="card card-compact">
+      <h4>🤝 For Investors</h4>
+      <p>Explore premium investment opportunities with verified property data.</p>
+      <a href="{{ url_for('invest') }}">View Investments →</a>
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+{% block content %}
+  {% if prop %}
+    <h3>{{ prop.title }}</h3>
+    <p>{{ prop.description }}</p>
+    <p>Location: {{ prop.location }}, {{ prop.city }}</p>
+    <p>Price: {{ prop.base_price }}</p>
+    <p>Seller: {{ prop.seller_name }} | Agent: {{ prop.agent_name }}</p>
+    <form method="post" action="{{ url_for('create_enquiry') }}">
+      <input type="hidden" name="property_id" value="{{ prop.property_id }}" />
+      <label>Notes for agent</label><textarea name="notes"></textarea>
+      <button type="submit">Request Visit / Enquiry</button>
+    </form>
+  {% else %}
+    <div>Property not found</div>
+  {% endif %}
+{% endblock %}

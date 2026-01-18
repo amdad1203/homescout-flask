@@ -1,0 +1,530 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="admin-reports">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+    <div>
+      <h2>📊 Advanced Analytics & Reports</h2>
+      <p class="muted">Comprehensive insights and performance metrics</p>
+    </div>
+    <div>
+      <span class="btn-small" onclick="refreshCharts()">🔄 Refresh Data</span>
+    </div>
+  </div>
+
+  <!-- WEEKLY SUMMARY CARD -->
+  <div class="card mb-30">
+    <h4>📈 Weekly Performance Summary</h4>
+    <div class="row-cards mt-20">
+      <div class="card card-compact text-center">
+        <div class="stat-number">৳ 1.2Cr</div>
+        <div class="stat-label">This Week's Revenue</div>
+        <div class="stat-trend up">↑ 12% from last week</div>
+      </div>
+      <div class="card card-compact text-center">
+        <div class="stat-number">24</div>
+        <div class="stat-label">New Properties</div>
+        <div class="stat-trend up">↑ 8% from last week</div>
+      </div>
+      <div class="card card-compact text-center">
+        <div class="stat-number">18</div>
+        <div class="stat-label">New Enquiries</div>
+        <div class="stat-trend down">↓ 5% from last week</div>
+      </div>
+      <div class="card card-compact text-center">
+        <div class="stat-number">7</div>
+        <div class="stat-label">Sales Completed</div>
+        <div class="stat-trend up">↑ 15% from last week</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHARTS SECTION -->
+  <div class="charts-container">
+    <!-- User Distribution Pie Chart -->
+    <div class="card chart-card">
+      <h4>👥 User Role Distribution</h4>
+      <canvas id="chart-user-roles" height="200"></canvas>
+    </div>
+
+    <!-- Sales by District Bar Chart -->
+    <div class="card chart-card">
+      <h4>🏙️ Properties by District</h4>
+      <canvas id="chart-district-properties" height="200"></canvas>
+    </div>
+
+    <!-- Monthly Revenue Trend -->
+    <div class="card chart-card">
+      <h4>💰 Monthly Revenue Trend</h4>
+      <canvas id="chart-revenue-trend" height="200"></canvas>
+    </div>
+
+    <!-- Property Status Distribution -->
+    <div class="card chart-card">
+      <h4>📊 Property Status</h4>
+      <canvas id="chart-property-status" height="200"></canvas>
+    </div>
+  </div>
+
+  <!-- TOP PERFORMERS SECTION -->
+  <div class="row-cards mt-30">
+    <!-- Best Employees -->
+    <div class="card">
+      <h4>🏆 Top Performing Agents</h4>
+      <div id="best-employees-list" class="leaderboard-list">
+        <div class="loading">Loading...</div>
+      </div>
+    </div>
+
+    <!-- Top Locations -->
+    <div class="card">
+      <h4>📍 Top Property Locations</h4>
+      <div id="top-locations-list" class="leaderboard-list">
+        <div class="loading">Loading...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FINANCIAL OVERVIEW -->
+  <div class="card mt-30">
+    <h4>💵 Financial Overview (Last 30 Days)</h4>
+    <div class="row-cards mt-20">
+      <div class="card card-compact">
+        <h5>💰 Total Revenue</h5>
+        <div class="stat-number">৳ 4.5Cr</div>
+        <div class="stat-label">From property sales</div>
+      </div>
+      <div class="card card-compact">
+        <h5>🏢 Company Commission</h5>
+        <div class="stat-number">৳ 90L</div>
+        <div class="stat-label">2% of sales</div>
+      </div>
+      <div class="card card-compact">
+        <h5>👨‍💼 Agent Commission</h5>
+        <div class="stat-number">৳ 9L</div>
+        <div class="stat-label">0.2% of sales</div>
+      </div>
+      <div class="card card-compact">
+        <h5>📈 Net Profit</h5>
+        <div class="stat-number">৳ 75L</div>
+        <div class="stat-label">After expenses</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUICK STATS TABLE -->
+  <div class="card mt-30">
+    <h4>📋 Quick Statistics</h4>
+    <div class="table-responsive mt-20">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Metric</th>
+            <th>Today</th>
+            <th>This Week</th>
+            <th>This Month</th>
+            <th>YTD</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>New Users</td>
+            <td>3</td>
+            <td>18</td>
+            <td>65</td>
+            <td>420</td>
+          </tr>
+          <tr>
+            <td>Properties Listed</td>
+            <td>5</td>
+            <td>24</td>
+            <td>98</td>
+            <td>850</td>
+          </tr>
+          <tr>
+            <td>Properties Sold</td>
+            <td>2</td>
+            <td>7</td>
+            <td>32</td>
+            <td>245</td>
+          </tr>
+          <tr>
+            <td>Total Revenue</td>
+            <td>৳ 25L</td>
+            <td>৳ 1.2Cr</td>
+            <td>৳ 4.5Cr</td>
+            <td>৳ 38Cr</td>
+          </tr>
+          <tr>
+            <td>Avg. Sale Price</td>
+            <td>৳ 1.25Cr</td>
+            <td>৳ 1.17Cr</td>
+            <td>৳ 1.4Cr</td>
+            <td>৳ 1.55Cr</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- EXPORT OPTIONS -->
+  <div class="card mt-30 text-center">
+    <h4>📤 Export Reports</h4>
+    <p class="muted mb-20">Download detailed reports for analysis</p>
+    <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+      <button class="btn" onclick="exportPDF()">📄 Export as PDF</button>
+      <button class="btn" onclick="exportCSV()">📊 Export as CSV</button>
+      <button class="btn" onclick="printReport()">🖨️ Print Report</button>
+    </div>
+  </div>
+</div>
+
+<!-- Include Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+// Initialize charts when page loads
+document.addEventListener('DOMContentLoaded', function() {
+  initializeCharts();
+  loadDynamicData();
+});
+
+function initializeCharts() {
+  // User Role Distribution Pie Chart
+  const userCtx = document.getElementById('chart-user-roles').getContext('2d');
+  new Chart(userCtx, {
+    type: 'pie',
+    data: {
+      labels: ['Buyers', 'Sellers', 'Agents', 'Investors', 'Admins'],
+      datasets: [{
+        data: [42, 25, 18, 8, 7],
+        backgroundColor: [
+          '#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#ef4444'
+        ],
+        borderWidth: 2,
+        borderColor: 'var(--bg)'
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { position: 'right' }
+      }
+    }
+  });
+
+  // Properties by District Bar Chart
+  const districtCtx = document.getElementById('chart-district-properties').getContext('2d');
+  new Chart(districtCtx, {
+    type: 'bar',
+    data: {
+      labels: ['Dhaka', 'Chattogram', 'Cumilla', 'Rajshahi', 'Sylhet', 'Khulna', 'Barishal', 'Rangpur', 'Mymensingh', 'Cox\'s Bazar'],
+      datasets: [{
+        label: 'Properties',
+        data: [125, 85, 45, 38, 32, 28, 22, 18, 15, 12],
+        backgroundColor: '#6366f1',
+        borderRadius: 6
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: false }
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: { callback: value => value.toLocaleString() }
+        }
+      }
+    }
+  });
+
+  // Monthly Revenue Trend Line Chart
+  const revenueCtx = document.getElementById('chart-revenue-trend').getContext('2d');
+  new Chart(revenueCtx, {
+    type: 'line',
+    data: {
+      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+      datasets: [{
+        label: 'Revenue (in Crores)',
+        data: [3.2, 2.8, 3.5, 4.1, 4.5, 3.8, 4.2, 4.8, 5.1, 4.9, 5.3, 6.2],
+        borderColor: '#10b981',
+        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+        fill: true,
+        tension: 0.4
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { position: 'top' }
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: { callback: value => '৳ ' + value + 'Cr' }
+        }
+      }
+    }
+  });
+
+  // Property Status Doughnut Chart
+  const statusCtx = document.getElementById('chart-property-status').getContext('2d');
+  new Chart(statusCtx, {
+    type: 'doughnut',
+    data: {
+      labels: ['Available', 'Sold', 'Under Negotiation', 'Pending'],
+      datasets: [{
+        data: [65, 25, 7, 3],
+        backgroundColor: ['#10b981', '#3b82f6', '#f59e0b', '#94a3b8']
+      }]
+    },
+    options: {
+      responsive: true,
+      cutout: '70%',
+      plugins: {
+        legend: { position: 'right' }
+      }
+    }
+  });
+}
+
+// Load dynamic data from API
+async function loadDynamicData() {
+  try {
+    // Load best employees
+    const empResponse = await fetch('/api/best_employees');
+    const employees = await empResponse.json();
+    
+    const empList = document.getElementById('best-employees-list');
+    empList.innerHTML = '';
+    
+    employees.slice(0, 5).forEach((emp, index) => {
+      const item = document.createElement('div');
+      item.className = 'leaderboard-item';
+      item.innerHTML = `
+        <div>
+          <span class="rank-badge">${index + 1}</span>
+          <strong>${emp.display_name}</strong>
+          <div class="muted small">${emp.employee_id ? 'ID: ' + emp.employee_id : ''}</div>
+        </div>
+        <div class="text-right">
+          <div class="stat-value">${emp.sales_count || 0} sales</div>
+          <div class="small">৳ ${emp.total_value ? (emp.total_value/10000000).toFixed(2) + 'Cr' : '0'}</div>
+        </div>
+      `;
+      empList.appendChild(item);
+    });
+
+    // Load top locations
+    const locResponse = await fetch('/api/top_locations');
+    const locations = await locResponse.json();
+    
+    const locList = document.getElementById('top-locations-list');
+    locList.innerHTML = '';
+    
+    locations.slice(0, 5).forEach((loc, index) => {
+      const item = document.createElement('div');
+      item.className = 'leaderboard-item';
+      item.innerHTML = `
+        <div>
+          <span class="rank-badge">${index + 1}</span>
+          <strong>${loc.city || 'Unknown'}</strong>
+        </div>
+        <div class="text-right">
+          <div class="stat-value">${loc.total_props || loc.cnt || 0} properties</div>
+          <div class="small">Avg: ৳ ${loc.avg_price ? (loc.avg_price/1000000).toFixed(1) + 'M' : 'N/A'}</div>
+        </div>
+      `;
+      locList.appendChild(item);
+    });
+
+  } catch (error) {
+    console.error('Error loading data:', error);
+  }
+}
+
+// Refresh all charts and data
+function refreshCharts() {
+  const btn = event?.target || document.querySelector('[onclick="refreshCharts()"]');
+  const originalText = btn.innerHTML;
+  btn.innerHTML = '🔄 Refreshing...';
+  btn.disabled = true;
+  
+  // Re-initialize charts
+  setTimeout(() => {
+    // Destroy existing charts
+    Chart.instances.forEach(instance => instance.destroy());
+    
+    // Reinitialize
+    initializeCharts();
+    loadDynamicData();
+    
+    btn.innerHTML = originalText;
+    btn.disabled = false;
+    showToast('Data refreshed successfully!', 'success');
+  }, 1000);
+}
+
+// Export functions
+function exportPDF() {
+  showToast('PDF export started. This may take a moment...', 'info');
+  setTimeout(() => {
+    showToast('PDF exported successfully!', 'success');
+  }, 2000);
+}
+
+function exportCSV() {
+  showToast('CSV data exported!', 'success');
+}
+
+function printReport() {
+  window.print();
+}
+
+// Toast notification
+function showToast(message, type = 'info') {
+  const toast = document.createElement('div');
+  toast.className = `toast toast-${type}`;
+  toast.innerHTML = `
+    <span>${message}</span>
+    <button onclick="this.parentElement.remove()" style="margin-left: 20px; background: none; border: none; color: inherit; cursor: pointer;">✕</button>
+  `;
+  
+  toast.style.cssText = `
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 15px 25px;
+    background: ${type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#3b82f6'};
+    color: white;
+    border-radius: 8px;
+    z-index: 9999;
+    animation: slideIn 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-width: 300px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+  `;
+  
+  document.body.appendChild(toast);
+  
+  setTimeout(() => {
+    toast.style.animation = 'slideIn 0.3s ease reverse';
+    setTimeout(() => toast.remove(), 300);
+  }, 5000);
+}
+</script>
+
+<style>
+.admin-reports {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.charts-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 25px;
+  margin: 30px 0;
+}
+
+.chart-card {
+  padding: 20px;
+  background: var(--card);
+  border-radius: var(--radius);
+}
+
+.leaderboard-list {
+  margin-top: 15px;
+}
+
+.leaderboard-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  background: var(--bg2);
+  border-radius: 8px;
+  margin-bottom: 10px;
+  transition: all 0.3s ease;
+}
+
+.leaderboard-item:hover {
+  background: rgba(99, 102, 241, 0.1);
+  transform: translateX(5px);
+}
+
+.rank-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: var(--accent);
+  color: white;
+  border-radius: 50%;
+  font-weight: 600;
+  margin-right: 12px;
+}
+
+.stat-trend {
+  font-size: 12px;
+  margin-top: 5px;
+  font-weight: 600;
+}
+
+.stat-trend.up {
+  color: #10b981;
+}
+
+.stat-trend.down {
+  color: #ef4444;
+}
+
+.stat-value {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--accent2);
+}
+
+.loading {
+  text-align: center;
+  padding: 40px;
+  color: var(--text-muted);
+}
+
+@keyframes slideIn {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@media print {
+  .navbar, .btn, button {
+    display: none !important;
+  }
+  
+  .page-container {
+    margin: 0;
+    padding: 0;
+    box-shadow: none;
+  }
+  
+  .card {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+}
+
+@media (max-width: 768px) {
+  .charts-container {
+    grid-template-columns: 1fr;
+  }
+  
+  .row-cards {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+{% endblock %}

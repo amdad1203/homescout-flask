@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+{% block content %}
+  <h3>Admin - Properties</h3>
+  <table class="table">
+    <tr><th>ID</th><th>Title</th><th>Seller</th><th>Agent</th><th>Price</th><th>Status</th><th>Action</th></tr>
+    {% for p in properties %}
+    <tr>
+      <td>{{ p.property_id }}</td>
+      <td>{{ p.title }}</td>
+      <td>{{ p.seller_name }}</td>
+      <td>{{ p.agent_name }}</td>
+      <td>{{ p.base_price }}</td>
+      <td>{{ p.status }}</td>
+      <td>
+        <form method="post" action="{{ url_for('admin_remove_property', property_id=p.property_id) }}" style="display:inline">
+          <button type="submit">Remove</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+{% endblock %}

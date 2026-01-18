@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+{% block content %}
+  <h3>Seller Dashboard</h3>
+  <p><a href="{{ url_for('seller_new_request') }}">Add new seller request</a></p>
+  <div class="card">
+    <h4>Your Requests</h4>
+    <ul>{% for r in requests %}<li>{{ r.approx_location }} - {{ r.status }} - {{ r.created_at }}</li>{% else %}<li>No requests</li>{% endfor %}</ul>
+  </div>
+  <div class="card">
+    <h4>Your Properties</h4>
+    <ul>{% for p in properties %}<li>{{ p.title }} - {{ p.status }} - {{ p.base_price }}</li>{% else %}<li>No properties</li>{% endfor %}</ul>
+  </div>
+{% endblock %}

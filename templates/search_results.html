@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+{% block content %}
+  <div class="search-head">
+    <form method="get" action="{{ url_for('search_results') }}" class="search-form">
+      <input name="city" placeholder="City" value="{{ filters.city if filters else '' }}" />
+      <input name="min_price" placeholder="Min price" value="{{ filters.min_price if filters else '' }}" />
+      <input name="max_price" placeholder="Max price" value="{{ filters.max_price if filters else '' }}" />
+      <input name="min_rooms" placeholder="Min rooms" value="{{ filters.min_rooms if filters else '' }}" />
+      <button type="submit">Search</button>
+    </form>
+  </div>
+
+  <div class="grid-wrap">
+    {% if properties %}
+      <div class="grid-cards">
+        {% for p in properties %}
+          <div class="card prop-card-grid">
+            <a href="{{ url_for('property_detail', property_id=p.property_id) }}">
+              <div class="img-wrap">
+                {% set img_num = (p.property_id % 20) %}
+                {% if img_num == 0 %}{% set img_num = 20 %}{% endif %}
+                <img src="{{ url_for('static', filename='images/sample' ~ img_num ~ '.jpg') }}" 
+                     alt="{{ p.title }}"
+                     onerror="this.onerror=null; this.src='https://via.placeholder.com/400x300/1e293b/ffffff?text={{ p.city|default('Property') }}+{{ loop.index }}'">
+              </div>
+              <div class="card-body">
+                <div class="title">{{ p.title }}</div>
+                <div class="meta small">{{ p.location }}, {{ p.city }}</div>
+                <div class="meta small">Rooms: {{ p.total_rooms or '—' }} · Floor: {{ p.floor or '—' }}</div>
+                <div class="price">৳ {{ p.base_price }}</div>
+              </div>
+            </a>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="card small muted">No results found for current filters.</div>
+    {% endif %}
+  </div>
+{% endblock %}

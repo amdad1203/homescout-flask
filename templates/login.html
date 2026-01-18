@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+{% block content %}
+  <h3>Login</h3>
+  {% if session.get('_error') %}<div style="color:red">{{ session.pop('_error') }}</div>{% endif %}
+  <form method="post">
+    <label>Email / Username / Phone</label><input name="identifier" required />
+    <label>Password</label><input name="password" type="password" required />
+    <button type="submit">Login</button>
+  </form>
+  <p class="small">Sample admin: admin1 / admin123</p>
+{% endblock %}

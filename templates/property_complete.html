@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+{% block content %}
+  <h3>Complete Property</h3>
+  {% if prop %}
+    <form method="post">
+      <label>Title</label><input name="title" value="{{ prop.title }}" required/>
+      <label>Description</label><textarea name="description">{{ prop.description }}</textarea>
+      <label>Area (sqft)</label><input name="area_sqft" value="{{ prop.area_sqft }}" />
+      <label>Floor</label><input name="floor" value="{{ prop.floor }}" />
+      <label>Rooms</label><input name="total_rooms" value="{{ prop.total_rooms }}" />
+      <label>Bathrooms</label><input name="bathrooms" value="{{ prop.bathrooms }}" />
+      <label>Balcony</label><input name="balcony_count" value="{{ prop.balcony_count }}" />
+      <label>Facing</label><input name="facing" value="{{ prop.facing }}" />
+      <label>Has Lift</label><input type="checkbox" name="has_lift" {% if prop.has_lift %}checked{% endif %} />
+      <label>Open Kitchen</label><input type="checkbox" name="open_kitchen" {% if prop.open_kitchen %}checked{% endif %} />
+      <label>Parking</label><select name="parking_type"><option>None</option><option>Street</option><option>Covered</option><option>Garage</option></select>
+      <label>Base Price</label><input name="base_price" value="{{ prop.base_price }}" />
+      <label>Estimated Market Value</label><input name="estimated_market_value" value="{{ prop.estimated_market_value }}" />
+      <button type="submit">Save & Enlist</button>
+    </form>
+  {% else %}
+    <div>Property not found</div>
+  {% endif %}
+{% endblock %}

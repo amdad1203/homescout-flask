@@ -1,0 +1,166 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>HomeScout - Bangladesh</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="nav-left">
+      <a class="brand" href="{{ url_for('index') }}">🏠 HomeScout</a>
+
+      {% if session.get('username') %}
+        <span class="user-tag">{{ session.get('username') }} ({{ session.get('role') }})</span>
+      {% endif %}
+    </div>
+
+    <div class="nav-right">
+      <a href="{{ url_for('index') }}">Home</a>
+      
+      {% if session.get('user_id') %}
+        {% if session.get('role') == 'admin' %}
+          <a href="{{ url_for('admin_dashboard') }}">Admin</a>
+          <a href="{{ url_for('reports') }}">Reports</a>
+        {% elif session.get('role') == 'seller' %}
+          <a href="{{ url_for('seller_dashboard') }}">Seller</a>
+        {% elif session.get('role') == 'buyer' %}
+          <a href="{{ url_for('buyer_dashboard') }}">Buyer</a>
+          <a href="{{ url_for('search_results') }}">Search</a>
+        {% elif session.get('role') == 'employee' %}
+          <a href="{{ url_for('agent_dashboard') }}">Agent</a>
+        {% elif session.get('role') == 'investor' %}
+          <a href="{{ url_for('investor_dashboard') }}">Investor</a>
+        {% endif %}
+      {% else %}
+        <a href="{{ url_for('search_results') }}">Browse</a>
+        <a href="{{ url_for('login') }}">Login</a>
+        <a class="btn-small" href="{{ url_for('register') }}">Register</a>
+      {% endif %}
+      
+      {% if session.get('user_id') %}
+        <a class="btn-small danger" href="{{ url_for('logout') }}">Logout</a>
+      {% endif %}
+    </div>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <main class="page-container">
+    <!-- Success/Error Messages -->
+    {% if session.get('_success') %}
+      <div class="alert-success">
+        {{ session.pop('_success') }}
+      </div>
+    {% endif %}
+    
+    {% if session.get('_error') %}
+      <div class="alert-error">
+        {{ session.pop('_error') }}
+      </div>
+    {% endif %}
+    
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2024 HomeScout Bangladesh. All rights reserved.</p>
+    <p>
+      <a href="{{ url_for('index') }}">Home</a> |
+      <a href="{{ url_for('search_results') }}">Search Properties</a> |
+      {% if session.get('user_id') %}
+        <a href="{{ url_for('logout') }}">Logout</a>
+      {% else %}
+        <a href="{{ url_for('login') }}">Login</a>
+      {% endif %}
+    </p>
+  </footer>
+
+  <script>
+    // Simple JavaScript for better UX
+    document.addEventListener('DOMContentLoaded', function() {
+      // Add loading state to buttons
+      const forms = document.querySelectorAll('form');
+      forms.forEach(form => {
+        form.addEventListener('submit', function() {
+          const submitBtn = this.querySelector('button[type="submit"]');
+          if (submitBtn) {
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = 'Processing...';
+            submitBtn.disabled = true;
+            
+            // Restore button after 5 seconds (in case of error)
+            setTimeout(() => {
+              submitBtn.innerHTML = originalText;
+              submitBtn.disabled = false;
+            }, 5000);
+          }
+        });
+      });
+      
+      // Auto-hide alerts after 5 seconds
+      const alerts = document.querySelectorAll('.alert-success, .alert-error');
+      alerts.forEach(alert => {
+        setTimeout(() => {
+          alert.style.opacity = '0';
+          alert.style.transition = 'opacity 0.5s';
+          setTimeout(() => alert.remove(), 500);
+        }, 5000);
+      });
+      
+      // Format prices on client side if needed
+      document.querySelectorAll('.price').forEach(el => {
+        const price = el.textContent.match(/[\d,]+/g);
+        if (price && !price[0].includes(',')) {
+          el.textContent = el.textContent.replace(
+            price[0], 
+            parseInt(price[0]).toLocaleString('en-IN')
+          );
+        }
+      });
+    });
+  </script>
+  
+  <style>
+    .alert-success {
+      background: rgba(16, 185, 129, 0.2);
+      color: #10b981;
+      padding: 12px 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      border-left: 4px solid #10b981;
+    }
+    
+    .alert-error {
+      background: rgba(239, 68, 68, 0.2);
+      color: #ef4444;
+      padding: 12px 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      border-left: 4px solid #ef4444;
+    }
+    
+    footer {
+      text-align: center;
+      padding: 30px;
+      color: var(--text-muted);
+      font-size: 14px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      margin-top: 40px;
+    }
+    
+    footer a {
+      color: var(--text-muted);
+      margin: 0 10px;
+      text-decoration: none;
+    }
+    
+    footer a:hover {
+      color: var(--accent);
+    }
+  </style>
+</body>
+</html>

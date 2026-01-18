@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+{% block content %}
+  <h3>New Seller Request</h3>
+  <form method="post">
+    <label>Approx Location</label><input name="approx_location" required/>
+    <label>City</label><input name="approx_city" />
+    <label>Approx Price</label><input name="approx_price" type="number" />
+    <label>Approx Floor</label><input name="approx_floor" type="number" />
+    <label>Approx Rooms</label><input name="approx_rooms" type="number" />
+    <label>Notes</label><textarea name="notes"></textarea>
+    <button type="submit">Submit</button>
+  </form>
+{% endblock %}

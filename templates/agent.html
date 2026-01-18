@@ -1,0 +1,8 @@
+{% extends "layout.html" %}
+{% block content %}
+  <h3>Agent Dashboard</h3>
+  <div class="card">
+    <h4>Assigned Enquiries</h4>
+    <ul>{% for e in enquiries %}<li>{{ e.title }} — {{ e.buyer_name }} — {{ e.status }} <form method="post" action="{{ url_for('update_enquiry', enquiry_id=e.enquiry_id) }}" style="display:inline"><select name="status"><option>Pending</option><option>Visit1</option><option>Visit2</option><option>Negotiating</option><option>Confirmed</option></select><input name="notes" placeholder="notes"/><button type="submit">Update</button></form></li>{% else %}<li>No enquiries</li>{% endfor %}</ul>
+  </div>
+{% endblock %}
